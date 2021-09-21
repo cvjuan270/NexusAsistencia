@@ -1,0 +1,63 @@
+﻿@model IEnumerable<NexusAsistencia.Models.Anexo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Descri)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DirAne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Latitu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Longit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nota)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ruc)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descri)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DirAne)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Latitu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Longit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nota)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ruc)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdAnexo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdAnexo }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdAnexo })
+        </td>
+    </tr>
+}
+
+</table>

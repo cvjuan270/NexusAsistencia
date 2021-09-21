@@ -1,0 +1,74 @@
+﻿@model NexusAsistencia.Models.Anexo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Anexo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Descri)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descri)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DirAne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DirAne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Latitu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Latitu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Longit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Longit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RanMet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RanMet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nota)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nota)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ruc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ruc)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdAnexo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

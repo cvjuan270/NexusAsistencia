@@ -1,0 +1,100 @@
+﻿@model IdentitySample.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Crear nueva cuenta</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-error" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+
+    </div>
+
+    <!--Campos adicionales-->
+    <div class="form-group">
+        @Html.LabelFor(model => model.Dni, htmlAttributes: new { @class = "" })
+        @Html.EditorFor(model => model.Dni, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Dni, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NomApe, htmlAttributes: new { @class = "" })
+        @Html.EditorFor(model => model.NomApe, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.NomApe, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NumCel, htmlAttributes: new { @class = "" })
+        @Html.EditorFor(model => model.NumCel, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.NumCel, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FecNac, htmlAttributes: new { @class = "" })
+        @Html.EditorFor(model => model.FecNac, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.FecNac, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.HorJor, htmlAttributes: new { @class = "" })
+        @Html.EditorFor(model => model.HorJor, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.HorJor, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Breake, htmlAttributes: new { @class = "" })
+        @Html.EditorFor(model => model.Breake, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Breake, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.HorBre, htmlAttributes: new { @class = "" })
+        @Html.EditorFor(model => model.HorBre, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.HorBre, "", new { @class = "text-danger" })
+    </div>
+
+    <!--Campos adicionales-->
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Selecciona rol de usuario
+        </label>
+        <div class="col-md-10">
+            @foreach (var item in (SelectList)ViewBag.RoleId)
+            {
+                <input type="checkbox" name="SelectedRoles" value="@item.Value" class="checkbox-inline" />
+                @Html.Label(item.Value, new { @class = "control-label" })
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="Crear" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

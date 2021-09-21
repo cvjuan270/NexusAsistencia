@@ -1,0 +1,277 @@
+﻿@model NexusAsistencia.Models.Asistencia
+
+@{
+    ViewBag.Title = "Registro de entrada";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Asistencia</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <!--DATOS DE USUARIO-->
+        <div class="card mb-2">
+            <div class="card-header bg-primary text-white"><h5>Datos de Empleado</h5></div>
+            <div class="card-body ml-3 mr-3">
+                <div class="row">
+                    <div class="mr-3">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Empresa</span>
+                            </div>
+                            @Html.DropDownList("Ruc", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+                    <div class="mr-3">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Local anexo</span>
+                            </div>
+                            @Html.DropDownList("IdAnexo", null, htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+                    <div class="mr-3">
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Usuario</span>
+                            </div>
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="row">
+                        <!--DATOS ENTRADA-->
+                        <div class="card col-md-3">
+                            <div class="card-body">
+
+                                <dl>
+                                    <dt>Dirección:</dt>
+                                    <dd id="AneDir"></dd>
+                                    <dt>Nota: </dt>
+                                    <dd id="Nota"></dd>
+                                    <dt>Cordenadas</dt>
+                                    <dd>
+                                        <input id="AneLat" class="form-control form-control-sm mb-2" type="number" readonly="readonly" value="" />
+                                        <input id="AneLon" class="form-control form-control-sm mb-2" type="number" readonly="readonly" />
+                                        Distancia entre puntos:
+                                        <input id="DisMar" class="form-control form-control-sm mb-2 text-primary" type="number" readonly="readonly" />
+                                        <input id="RanMet" class="form-control form-control-sm mb-2 text-primary" type="hidden" readonly="readonly" />
+                                    </dd>
+
+                                </dl>
+
+                                <div class="form-group">
+                                    <label>Hora den entrada</label>
+                                    @Html.EditorFor(model => model.HorEnt, new { htmlAttributes = new { @class = "form-control form-control-sm text-primary", @readonly = "readonly", @type="time" } })
+                                </div>
+
+                                <div class="input-group input-group-sm mb-3">
+                                    <div id="updateMap" class="btn btn-outline-secondary col-md-12 mb-2">Actualizar ubicación</div>
+
+                                    <div id="marcEntrada" class="btn btn-primary col-md-12">Marcar entrada</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--MAPA ENTRADA-->
+                        <div class="card col-md-9">
+                            <div id="mapEntrada" class="card-body col-md-12" style="height:300px">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            @Html.ActionLink("Regresar", "Index")
+        </div>
+    </div>
+}
+@{
+    var urlHelper = new UrlHelper(Html.ViewContext.RequestContext);
+    var baseurl = urlHelper.Content("~");
+}
+
+@section Scripts {
+    @*// @Scripts.Render("~/bundles/jqueryval")*@
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwjMbXc-77N3qkGgg08x5QlztRuO_ywqk"></script>
+
+    @*Selecccionar empresa y anexos*@
+    <script>
+        //variablles
+    var lat;
+    var lng;
+        var GetRuc = function () {
+            var Ruc = $("#Ruc").val();
+            var ruc = new FormData();
+            ruc.append('oruc', Ruc);
+            return ruc;
+        }
+        var GetIdAne = function () {
+            var ane = new FormData();
+            ane.append('IdAnexo', $("#IdAnexo").val());
+            return ane;
+        }
+
+        //seleccionar empresa
+        $('#Ruc').on('change', function () {
+           getAnexos();
+            //limpia lat lon
+            $("#AneLat").val("");
+            $("#AneLon").val("");
+        });
+
+        function getAnexos() {
+            fetch("@Url.Action("GetAnexos")", {
+                method: "POST",
+                body:GetRuc()
+            }).then(function (res) {
+                return res.json()
+            }).then(function (myJson) {
+                console.log(myJson);
+
+                //llenar lista
+                $("#IdAnexo").empty().append($("<option disabled selected></option>").val("0").html("Seleccione"));
+                //llenar con json
+                $.each(myJson, function (key, value) {
+                    var option = $(document.createElement('option'));
+                    option.html(value.Descri);
+                    option.val(value.IdAnexo)
+                    $("#IdAnexo").append(option);
+                });
+            });
+        };
+
+         //get latlon de anexo
+        $("#IdAnexo").on('change', function () {
+            fetch("@Url.Action("getAnexo")", {
+                method: "POST",
+                body: GetIdAne()
+            }).then(function (res) {
+                return res.json()
+            }).then(function (myJson) {
+                console.log("getIdAnexo");
+                $("#AneLat").val(myJson.Latitu);
+                $("#AneLon").val(myJson.Longit);
+                $("#AneDir").text(myJson.DirAne);
+                $("#Nota").text(myJson.Nota);
+                $("#RanMet").val(myJson.RanMet);
+            });
+        });
+
+    </script>
+
+    @*Ubicacion*@
+<script>
+        $(document).ready(function () {
+            var latlng = GetUbicacion();
+        });
+
+
+        //Geolocalizacion
+        function GetUbicacion() {
+            if (navigator.geolocation) {
+
+            } else {
+                alert("Navegador no acepta geolocalización")
+            }
+
+            function localizacion(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                lat = latitude;
+                lng = longitude;
+            }
+            function error() {
+                alert("no se pudo obtener la ubicació")
+            }
+            navigator.geolocation.getCurrentPosition(localizacion, error)
+        };
+        //Geolocalizacion
+</script>
+
+    @*Actualizar mapa*@
+    <script>
+        $("#updateMap").click(function () {
+            //Asignar valores
+            var AneLat = $("#AneLat").val();
+            var AneLon = $("#AneLon").val();
+            //Asignar valores
+            GetUbicacion();
+            creaMapa();
+            //calcula distancia
+            $("#DisMar").val(getDistanciaMetros(AneLat, AneLon, lat, lng).toFixed(2));
+            //calcula distancia
+
+        });
+    </script>
+
+    @*Crear mapa*@
+    <script>
+        function creaMapa() {
+            const myLatLng = { lat: lat, lng: lng };
+            const aneLatLng = { lat: parseFloat($("#AneLat").val()), lng: parseFloat($("#AneLon").val()) }
+
+            console.log(myLatLng)
+            console.log("local anexo" + aneLatLng)
+
+            const map = new google.maps.Map(document.getElementById("mapEntrada"), {
+                zoom: 15,
+                center: myLatLng,
+            });
+            new google.maps.Marker({
+                position: aneLatLng,
+                map,
+                icon: document.location.origin.toString() + "/Content/img/marcador-de-posicion.png",
+            });
+
+            new google.maps.Marker({
+                position: myLatLng,
+                map,
+                icon: document.location.origin.toString() + "/Content/img/ubicacion.png",
+                label: "Yo!"
+
+            });
+
+        }
+    </script>
+
+    @*Marcar entrada*@
+<script>
+    $("#marcEntrada").click(function () {
+
+        if ($("#IdAnexo").val() != 0) {
+
+            $("#updateMap").click();
+            var rango = $("#RanMet").val();
+            var dista = $("#DisMar").val();
+            if (parseInt(dista) < parseInt(rango)) {
+
+                //Registro entrada
+                $("form").submit();
+                //Registro entrada
+            }
+            else {
+                alert("Esta muy alejado del rango permitido para el registro");
+            }
+        }
+        else {
+            alert("Seleccione local anexo")
+        }
+
+    });
+    </script>
+
+}

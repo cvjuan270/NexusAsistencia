@@ -1,0 +1,158 @@
+﻿@model IEnumerable<NexusAsistencia.Models.Asistencia>
+
+@{
+    ViewBag.Title = "Registro de asistencia";
+}
+
+@if (Model.First().HorEnt == null)
+{
+    <div class=" container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <div class="form-inline">
+                        <h1>Registrar asistencia: </h1>
+                        <div class="text-center" id="fecha"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>Es Importante activar la geolocalizacion de sus teléfono; de lo contrario no se pora validar la ubicación</p>
+                    <a class="btn btn-primary" href="@Url.Action("Create")">Marcar Entrada</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class=" container">
+        @*<h2>HORA DE ENTRADA <span class="badge badge-secondary">@Model.First().HorEnt</span></h2>*@
+        <h2>REGISTROS DE ASISTENCIA</h2>
+        <div class="card-deck mb-3 text-center">
+            @if (Model.First().BreIni == null || Model.First().BreFin == null & Model.First().HorSal==null)
+            {
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h1 class="text-warning">Refrigerio</h1>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-warning" href="@Url.Action("Refrigerio", new { id=Model.First().IdAsistencia})">MARCAR REFRIGERIO</a>
+                    </div>
+                </div>
+            }
+
+            @if (Model.First().HorSal==null)
+            {
+
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h1 class="text-danger">Salida</h1>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-danger" href="@Url.Action("Salida", new { id=Model.First().IdAsistencia})">MARCAR SALIDA</a>
+                    </div>
+                </div>
+
+            }
+
+
+
+        </div>
+    </div>
+}
+@if (Model.First().BreFin != null & Model.First().HorSal != null)
+{
+    <dl class="row">
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().anexo.Descri)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().anexo.Descri)
+        </dd>
+
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().empresa.RazSoc)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().empresa.RazSoc)
+        </dd>
+
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().UserName)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().UserName)
+        </dd>
+
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().HorEnt)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().HorEnt)
+        </dd>
+
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().Breake)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().Breake)
+        </dd>
+
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().BreIni)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().BreIni)
+        </dd>
+
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().BreFin)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().BreFin)
+        </dd>
+
+        <dt class="col-md-3">
+            @Html.DisplayNameFor(model => model.First().HorSal)
+        </dt>
+
+        <dd class="col-md-9">
+            @Html.DisplayFor(model => model.First().HorSal)
+        </dd>
+
+    </dl>
+}
+
+@section scripts{
+
+
+    <script type="text/javascript">
+        /* setInterval("settime()", 1000);*/
+
+                    //function settime() {
+                    //    var dateTime = new Date();
+                    //    var hour = dateTime.getHours();
+                    //    var minute = dateTime.getMinutes();
+                    //    var second = dateTime.getSeconds();
+                    //    var fecha = dateTime.getDate() + "/" + (dateTime.getMonth() + 1) + "/" + dateTime.getFullYear()
+
+                    //    if (minute < 10)
+                    //        minute = "0" + minute;
+
+                    //    if (second < 10)
+                    //        second = "0" + second;
+
+                    //    var time = "" + hour + ":" + minute + ":" + second;
+                    //    document.getElementById("fecha").innerHTML = "<h1>" + fecha + "<span class='badge badge - secondary text-primary'>" + time + "</span>" + "<h1>";
+                    //    document.getElementById("clock").value = fecha + "  " + time;
+                    //}
+    </script>
+
+}

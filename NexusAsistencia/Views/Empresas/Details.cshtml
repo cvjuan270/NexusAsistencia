@@ -1,0 +1,108 @@
+﻿@model NexusAsistencia.Models.Empresa
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Empresa</h4>
+    <hr />
+    <dl class="">
+        <dt>
+            @Html.DisplayNameFor(model => model.RazSoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RazSoc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DirEmp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DirEmp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contac)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contac)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CelCon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CelCon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Ruc }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<h2>Anexos</h2>
+@if (Model.Anexos.Count>0)
+{
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Anexos.First(). Descri)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anexos.First().DirAne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anexos.First().Latitu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anexos.First().Longit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Anexos.First().Nota)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Anexos)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descri)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DirAne)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nota)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "anexosdetails", new { id = item.IdAnexo })
+            </td>
+        </tr>
+    }
+
+</table>
+}

@@ -1,0 +1,90 @@
+﻿@model NexusAsistencia.Models.Asistencia
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Asistencia</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.anexo.Descri)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.anexo.Descri)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.empresa.RazSoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empresa.RazSoc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HorEnt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HorEnt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Breake)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Breake)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BreTie)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BreTie)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BreIni)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BreIni)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BreFin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BreFin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HorSal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HorSal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdAsistencia }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

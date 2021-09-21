@@ -1,0 +1,20 @@
+﻿
+@model NexusAsistencia.Models.ViewModels.BreakeVM
+@{
+    ViewBag.Title = "Breake";
+}
+
+<h2>Breake</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.IdAsistencia);
+
+    <div class=" form-group row">
+        @Html.LabelFor(model => model.BreIni, "Ruc", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(model => model.BreIni, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+}

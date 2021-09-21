@@ -1,0 +1,168 @@
+﻿@model NexusAsistencia.Models.Anexo
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Anexo</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.IdAnexo)
+    @Html.HiddenFor(model => model.Ruc)
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Empresa</label>
+                @Html.Editor("Empresa", new { htmlAttributes = new { @class = "form-control col-12", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Ruc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Descri, htmlAttributes: new { @class = "" })
+                @Html.EditorFor(model => model.Descri, new { htmlAttributes = new { @class = "form-control col-12" } })
+                @Html.ValidationMessageFor(model => model.Descri, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.DirAne, htmlAttributes: new { @class = "" })
+                @Html.EditorFor(model => model.DirAne, new { htmlAttributes = new { @class = "form-control col-12" } })
+                @Html.ValidationMessageFor(model => model.DirAne, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Localización</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Latitu, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.Latitu, new { htmlAttributes = new { @class = "form-control col-12" } })
+                                @Html.ValidationMessageFor(model => model.Latitu, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Longit, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.Longit, new { htmlAttributes = new { @class = "form-control col-12" } })
+                                @Html.ValidationMessageFor(model => model.Longit, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.RanMet, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.RanMet, new { htmlAttributes = new { @class = "form-control col-12" } })
+                                @Html.ValidationMessageFor(model => model.RanMet, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body" id="map_canvas" style="height:300px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Nota</span>
+                </div>
+                @Html.TextAreaFor(model => model.Nota, new { @class = "form-control col-12" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-primary" />
+    </div>
+
+</div>
+}
+
+<div>
+    @Html.ActionLink("Regresar a la lista", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @*Google*@
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwjMbXc-77N3qkGgg08x5QlztRuO_ywqk"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            //if (navigator.geolocation) {
+
+            //} else {
+            //    alert("Navegador no acepta geolocalización")
+            //}
+
+            //function localizacion(position) {
+            //    var latitude = position.coords.latitude;
+            //    var longitude = position.coords.longitude;
+            //    $("#Latitu").val(latitude);
+            //    $("#Longit").val(longitude);
+            //    console.log("Latitud :" + latitude);
+            //    console.log("Longitud :" + longitude);
+            //}
+            //function error() {
+            //    alert("no se pudo obtener la ubicació")
+            //}
+            //navigator.geolocation.getCurrentPosition(localizacion, error)
+
+            /**/
+            var map = new google.maps.Map(document.getElementById('map_canvas'), {
+                zoom: 12,
+                center: new google.maps.LatLng($("#Latitu").val(), $("#Longit").val()),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            // creates a draggable marker to the given coords
+            var vMarker = new google.maps.Marker({
+                position: new google.maps.LatLng($("#Latitu").val(), $("#Longit").val()),
+                draggable: true
+            });
+
+            // adds a listener to the marker
+            // gets the coords when drag event ends
+            // then updates the input with the new coords
+            google.maps.event.addListener(vMarker, 'dragend', function (evt) {
+                $("#Latitu").val(evt.latLng.lat().toFixed(6));
+                $("#Longit").val(evt.latLng.lng().toFixed(6));
+
+                map.panTo(evt.latLng);
+            });
+
+            // centers the map on markers coords
+            map.setCenter(vMarker.position);
+
+            // adds the marker on the map
+            vMarker.setMap(map);
+
+        });
+
+    </script>
+
+
+}

@@ -1,0 +1,451 @@
+﻿@model NexusAsistencia.Models.Asistencia
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Asistencia</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdAsistencia)
+        @Html.HiddenFor(model => model.Ruc)
+        @Html.HiddenFor(model => model.IdAnexo)
+        @Html.HiddenFor(model => model.UserName)
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.HorEnt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HorEnt, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                @Html.ValidationMessageFor(model => model.HorEnt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--Refrigerio-->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Refrigerio</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+
+                        <div>
+                            <div class="form-check">
+                                @Html.EditorFor(model => model.Breake, new { htmlAttributes = new { @class = "form-check-input", @style = "height:30px;width:30px" } })
+                                <label class="form-check-label">Refrigerio; ( si registra inicio de refrigerio, es importante registar tambien el término; de lo contrario no podra registar la salida)</label>
+                                @Html.ValidationMessageFor(model => model.Breake, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cadBreake" class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <!--DATOS breake-->
+                                <div class="card ">
+                                    <div class="card-body">
+
+                                        <div class="form-group row ">
+                                            <div class="">
+                                                @Html.LabelFor(model => model.BreIni, htmlAttributes: new { @class = "control-label" })
+                                                @Html.EditorFor(model => model.BreIni, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.BreIni, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row ">
+                                            <div class="">
+                                                @Html.LabelFor(model => model.BreFin, htmlAttributes: new { @class = "control-label" })
+                                                @Html.EditorFor(model => model.BreFin, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.BreFin, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <dl>
+                                            <dt>Cordenadas</dt>
+                                            <dd>
+                                                <input id="AneLat" class="form-control form-control-sm mb-2" type="number" readonly="readonly" value="" />
+                                                <input id="AneLon" class="form-control form-control-sm mb-2" type="number" readonly="readonly" />
+                                                Distancia entre puntos:
+                                                <input id="DisMar" class="form-control form-control-sm mb-2 text-primary" type="number" readonly="readonly" />
+                                                <input id="RanMet" class="form-control form-control-sm mb-2 text-primary" type="hidden" readonly="readonly" />
+                                            </dd>
+                                        </dl>
+
+                                    </div>
+                                    <div class="card">
+                                        <div id="map" class="card-body col-md-12" style="height:300px">
+
+                                        </div>
+                                    </div>
+                                    <div>
+                                        @if (ViewBag.MarcarBreake==true)
+                                        {
+                                            <div class="input-group input-group-sm ">
+                                                <div id="updateMap" class="btn btn-outline-secondary col-md-12 mb-2">Actualizar ubicación</div>
+
+                                                <div id="marcEntrada" class="btn btn-primary col-md-12">Marcar refrigerio</div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Refrigerio-->
+        <!--SALIDA-->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Salida</h5>
+                </div>
+                <div class="card-body">
+
+                    <div id="cardSalida" class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <!--DATOS salida-->
+                                <div class="card ">
+                                    <div class="card-body">
+
+                                        <div class="form-group row">
+                                            <div>
+                                                @Html.LabelFor(model => model.HorSal, htmlAttributes: new { @class = "control-label" })
+                                                @Html.EditorFor(model => model.HorSal, new { htmlAttributes = new { @class = "form-control",@readonly="readonly" } })
+                                                @Html.ValidationMessageFor(model => model.HorSal, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <dl>
+                                            <dt>Cordenadas</dt>
+                                            <dd>
+                                                <input id="AneLatSal" class="form-control form-control-sm mb-2" type="number" readonly="readonly" value="" />
+                                                <input id="AneLonSal" class="form-control form-control-sm mb-2" type="number" readonly="readonly" />
+                                                Distancia entre puntos:
+                                                <input id="DisMarSal" class="form-control form-control-sm mb-2 text-primary" type="number" readonly="readonly" />
+                                                <input id="RanMetSal" class="form-control form-control-sm mb-2 text-primary" type="hidden" readonly="readonly" />
+                                            </dd>
+                                        </dl>
+
+                                    </div>
+                                    <div class="card">
+                                        <div id="mapSal" class="card-body col-md-12" style="height:300px">
+
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="input-group input-group-sm ">
+                                            <div id="updateMapSal" class="btn btn-outline-secondary col-md-12 mb-2">Actualizar ubicación</div>
+
+                                            <div id="marcEntradaSal" class="btn btn-primary col-md-12">Marcar Salida</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--SALIDA-->
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwjMbXc-77N3qkGgg08x5QlztRuO_ywqk"></script>
+
+    <script>
+        //Al  cargar la pagina
+        $(document).ready(function () {
+
+            if ($("#Breake").prop('checked')) {
+                $("#cadBreake").show();
+            }
+            else {
+                $("#cadBreake").hide();
+            }
+
+            //Trae datos de anexo
+
+            var GetIdAne = function () {
+                var ane = new FormData();
+                ane.append('IdAnexo', $("#IdAnexo").val());
+                return ane;
+            }
+
+            fetch("@Url.Action("getAnexo")", {
+                method: "POST",
+                body: GetIdAne()
+            }).then(function (res) {
+                return res.json()
+            }).then(function (myJson) {
+                console.log("getIdAnexo");
+                $("#AneLat").val(myJson.Latitu);
+                $("#AneLon").val(myJson.Longit);
+                $("#RanMet").val(myJson.RanMet);
+                $("#AneLatSal").val(myJson.Latitu);
+                $("#AneLonSal").val(myJson.Longit);
+                $("#RanMetSal").val(myJson.RanMet);
+            });
+            //Trae datos de anexo
+        });
+        //Al  cargar la pagina
+
+        $("#Breake").change(function () {
+            if ($("#Breake").prop('checked')) {
+                $("#cadBreake").show();
+            }
+            else {
+                $("#cadBreake").hide();
+                limpiaDatosBreake();
+            }
+        });
+
+        //Limpiar hora de breake
+        function limpiaDatosBreake()
+        {
+            $("#BreIni").val("");
+            $("#BreFin").val("");
+        }
+        //Limpiar hora de breake
+    </script>
+
+    @*Mapas breake*@
+    <script type="text/javascript">
+
+        $("#updateMap").click(function () {
+            //Asignar valores
+            AneLat = $("#AneLat").val();
+            AneLon = $("#AneLon").val();
+            //Asignar valores
+            getUbicacion();
+            creaMapa();
+            //calcula distancia
+            $("#DisMar").val(getDistanciaMetros(AneLat, AneLon, Lat, Lng).toFixed(2));
+            //calcula distancia
+
+        });
+
+
+        //Geolocalizacion
+        function getUbicacion() {
+            if (navigator.geolocation) {
+
+            } else {
+                alert("Navegador no acepta geolocalización")
+            }
+
+            function localizacion(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                Lat = latitude;
+                Lng = longitude;
+
+                console.log("Latitud :" + latitude);
+                console.log("Longitud :" + longitude);
+            }
+            function error() {
+                alert("no se pudo obtener la ubicació")
+            }
+            navigator.geolocation.getCurrentPosition(localizacion, error)
+        };
+        //Geolocalizacion
+
+        function creaMapa() {
+            const myLatLng = { lat: Lat, lng: Lng };
+            const aneLatLng = { lat: parseFloat(AneLat), lng: parseFloat(AneLon) }
+
+            console.log(myLatLng)
+            console.log(aneLatLng)
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: myLatLng,
+            });
+            new google.maps.Marker({
+                position: myLatLng,
+                map,
+                label: "Yo!"
+            });
+
+            new google.maps.Marker({
+                position: aneLatLng,
+                map,
+                label: "Centro de trabajo"
+            });
+
+        }
+
+        function getDistanciaMetros(lat1, lon1, lat2, lon2) {
+            rad = function (x) { return x * Math.PI / 180; }
+            var R = 6378.137; //Radio de la tierra en km
+            var dLat = rad(lat2 - lat1);
+            var dLong = rad(lon2 - lon1);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) *
+                Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            console.log(c);
+            //aquí obtienes la distancia en metros por la conversion 1Km =1000m
+            var d = R * c * 1000;
+            console.log(d);
+            return d;
+        }
+
+        $("#marcEntrada").click(function () {
+
+            if ($("#IdAnexo").val() != 0) {
+
+                $("#updateMap").click();
+                var rango = $("#RanMet").val();
+                var dista = $("#DisMar").val();
+                if (parseInt(dista) < parseInt(rango)) {
+
+                    //Registro entrada
+                    $("form").submit();
+                    //Registro entrada
+                }
+                else {
+                    alert("Esta muy alejado del rango permitido para el registro");
+                }
+            }
+            else {
+                alert("Seleccione local anexo")
+            }
+
+        });
+
+    </script>
+
+    @*Maps salida*@
+    <script type="text/javascript">
+
+        $("#updateMapSal").click(function () {
+            //Asignar valores
+            var AneLatSal;
+            var AneLonSal;
+            //
+            var LatSal;
+            var LngSal;
+            //
+            AneLatSal = $("#AneLatSal").val();
+            AneLonSal = $("#AneLonSal").val();
+            //Asignar valores
+            getUbicacion();
+            creaMapaSal();
+
+            alert(AneLatSal+AneLonSal+LatSal+LngSal)
+            //calcula distancia
+            $("#DisMarSal").val(getDistanciaMetros(AneLatSal, AneLonSal, LatSal, LngSal).toFixed(2));
+            //calcula distancia
+
+        });
+
+
+        //Geolocalizacion
+        function getUbicacion() {
+            if (navigator.geolocation) {
+
+            } else {
+                alert("Navegador no acepta geolocalización")
+            }
+
+            function localizacion(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                LatSal = latitude;
+                LngSal = longitude;
+
+                console.log("Latitud :" + latitude);
+                console.log("Longitud :" + longitude);
+            }
+            function error() {
+                alert("no se pudo obtener la ubicació")
+            }
+            navigator.geolocation.getCurrentPosition(localizacion, error)
+        };
+        //Geolocalizacion
+
+        function creaMapaSal() {
+            const myLatLng = { lat: LatSal, lng: LngSal };
+            const aneLatLng = { lat: parseFloat(AneLatSal), lng: parseFloat(AneLonSal) }
+
+            console.log(myLatLng)
+            console.log(aneLatLng)
+
+            const map = new google.maps.Map(document.getElementById("mapSal"), {
+                zoom: 15,
+                center: myLatLng,
+            });
+            new google.maps.Marker({
+                position: myLatLng,
+                map,
+                label: "Yo!"
+            });
+
+            new google.maps.Marker({
+                position: aneLatLng,
+                map,
+                label: "Centro de trabajo"
+            });
+
+        }
+
+        function getDistanciaMetros(lat1, lon1, lat2, lon2) {
+            rad = function (x) { return x * Math.PI / 180; }
+            var R = 6378.137; //Radio de la tierra en km
+            var dLat = rad(lat2 - lat1);
+            var dLong = rad(lon2 - lon1);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) *
+                Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            console.log(c);
+            //aquí obtienes la distancia en metros por la conversion 1Km =1000m
+            var d = R * c * 1000;
+            console.log(d);
+            return d;
+        }
+
+        $("#marcEntradaSal").click(function () {
+
+            if ($("#IdAnexo").val() != 0) {
+
+                $("#updateMap").click();
+                var rango = $("#RanMet").val();
+                var dista = $("#DisMar").val();
+                if (parseInt(dista) < parseInt(rango)) {
+
+                    //Registro entrada
+                    $("form").submit();
+                    //Registro entrada
+                }
+                else {
+                    alert("(Salida)Esta muy alejado del rango permitido para el registro");
+                }
+            }
+            else {
+                alert("Seleccione local anexo")
+            }
+
+        });
+
+    </script>
+}

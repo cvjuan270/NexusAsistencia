@@ -1,0 +1,72 @@
+﻿@model NexusAsistencia.Models.Anexo
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Anexo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Descri)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descri)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DirAne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DirAne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Latitu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Latitu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Longit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Longit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nota)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nota)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ruc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ruc)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
